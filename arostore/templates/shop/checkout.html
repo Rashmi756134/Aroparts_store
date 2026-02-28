@@ -1,0 +1,552 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Aro Parts{% endblock %}
+
+{% block content %}
+
+<style>
+    /* ============================================
+       RESPONSIVE CHECKOUT STYLES
+       ============================================ */
+    
+    /* Base Styles */
+    .checkout-page {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .checkout-heading {
+        font-size: 28px;
+        font-weight: 700;
+        color: #202223;
+        margin-bottom: 24px;
+    }
+    
+    /* Free Shipping Banner */
+    .shipping-banner {
+        padding: 16px 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .shipping-banner-free {
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        border: 1px solid #16a34a;
+    }
+    
+    .shipping-banner-progress {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border: 1px solid #f59e0b;
+    }
+    
+    .shipping-text {
+        font-size: 16px;
+        font-weight: 600;
+        color: #15803d;
+    }
+    
+    .shipping-text-progress {
+        font-size: 14px;
+        color: #92400e;
+    }
+    
+    /* Checkout Layout */
+    .checkout-layout {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 30px;
+    }
+    
+    /* Form Card */
+    .form-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+    
+    .form-card-section {
+        padding: 20px;
+    }
+    
+    .form-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #202223;
+        margin-bottom: 16px;
+    }
+    
+    /* Form Inputs */
+    .form-input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e1e3e5;
+        border-radius: 8px;
+        font-size: 14px;
+        margin-bottom: 16px;
+        transition: border-color 0.2s;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-color: #008060;
+    }
+    
+    .form-label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #202223;
+        margin-bottom: 6px;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    /* Payment Section */
+    .payment-badge {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #f1f2f4;
+        border-radius: 8px;
+    }
+    
+    .razorpay-logo {
+        height: 25px;
+    }
+    
+    .payment-info {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .payment-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+    }
+    
+    .payment-subtitle {
+        font-size: 12px;
+        color: #6d7175;
+    }
+    
+    /* Submit Button */
+    .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: #008060;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .submit-btn:hover {
+        background: #006b4f;
+    }
+    
+    /* Order Summary Card */
+    .summary-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 100px;
+    }
+    
+    .summary-section {
+        padding: 20px;
+    }
+    
+    .summary-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #202223;
+        margin-bottom: 16px;
+    }
+    
+    /* Summary Item */
+    .summary-item {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e1e3e5;
+    }
+    
+    .summary-item:last-of-type {
+        border-bottom: none;
+    }
+    
+    .summary-item-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 6px;
+        overflow: hidden;
+        background: #f6f6f7;
+        flex-shrink: 0;
+    }
+    
+    .summary-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .summary-item-info {
+        flex: 1;
+    }
+    
+    .summary-item-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+        margin-bottom: 4px;
+    }
+    
+    .summary-item-qty {
+        font-size: 13px;
+        color: #6d7175;
+    }
+    
+    .summary-item-price {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+    }
+    
+    /* Summary Rows */
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 14px;
+    }
+    
+    .summary-label {
+        color: #6d7175;
+    }
+    
+    .summary-value {
+        font-weight: 500;
+        color: #202223;
+    }
+    
+    .summary-total-row {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 12px;
+        margin-top: 8px;
+        border-top: 2px solid #202223;
+    }
+    
+    .summary-total-label {
+        font-size: 18px;
+        font-weight: 600;
+        color: #202223;
+    }
+    
+    .summary-total-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #008060;
+    }
+    
+    /* ============================================
+       MEDIA QUERIES
+       ============================================ */
+    
+    /* Tablet (max-width: 768px) */
+    @media (max-width: 768px) {
+        .checkout-layout {
+            grid-template-columns: 1fr;
+        }
+        
+        .summary-card {
+            position: static;
+            order: -1;
+        }
+        
+        .checkout-heading {
+            font-size: 24px;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    /* Mobile (max-width: 480px) */
+    @media (max-width: 480px) {
+        .checkout-page {
+            padding: 20px 12px;
+        }
+        
+        .checkout-heading {
+            font-size: 22px;
+        }
+        
+        .form-card-section {
+            padding: 16px;
+        }
+        
+        .form-title {
+            font-size: 16px;
+        }
+        
+        .summary-section {
+            padding: 16px;
+        }
+        
+        .summary-title {
+            font-size: 16px;
+        }
+        
+        .summary-item {
+            gap: 10px;
+        }
+        
+        .summary-item-image {
+            width: 50px;
+            height: 50px;
+        }
+        
+        .submit-btn {
+            padding: 14px;
+            font-size: 15px;
+        }
+    }
+    
+    /* Small Mobile (max-width: 320px) */
+    @media (max-width: 320px) {
+        .checkout-page {
+            padding: 16px 8px;
+        }
+        
+        .checkout-heading {
+            font-size: 20px;
+        }
+        
+        .summary-item-image {
+            width: 45px;
+            height: 45px;
+        }
+    }
+</style>
+<!-- Add this in <head> -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<!-- Add this script at the bottom -->
+<script>
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const payBtn = document.getElementById('pay-btn');
+    
+    payBtn.disabled = true;
+    payBtn.textContent = 'Processing...';
+    
+    fetch('/create-razorpay-order/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const options = {
+                key: data.razorpay_key,
+                amount: data.amount,
+                currency: "INR",
+                name: "Aro Parts",
+                description: "Order Payment",
+                order_id: data.razorpay_order_id,
+                handler: function(response) {
+                    window.location.href = '/razorpay-success/?order_id=' + data.order_id + 
+                        '&razorpay_payment_id=' + response.razorpay_payment_id;
+                },
+                prefill: {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    contact: formData.get('phone')
+                },
+                theme: {
+                    color: "#008060"
+                }
+            };
+            
+            const rzp1 = new Razorpay(options);
+            rzp1.open();
+        } else {
+            alert('Error: ' + data.error);
+            payBtn.disabled = false;
+            payBtn.textContent = 'Pay ₹{{ total }}';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong!');
+        payBtn.disabled = false;
+        payBtn.textContent = 'Pay ₹{{ total }}';
+    });
+});
+</script>
+
+<div class="checkout-page" style="padding: 30px 20px;">
+    <h1 class="checkout-heading">Checkout</h1>
+    
+    <!-- Free Shipping Info -->
+    {% if free_shipping_message %}
+    <div class="shipping-banner shipping-banner-free">
+        <p class="shipping-text">🎉 You qualify for <strong>FREE SHIPPING</strong>!</p>
+    </div>
+    {% else %}
+    <div class="shipping-banner shipping-banner-progress">
+        <p class="shipping-text-progress">Add ₹{{ remaining_for_free }} more for <strong>FREE SHIPPING</strong>!</p>
+    </div>
+    {% endif %}
+    
+    <div class="checkout-layout">
+        <!-- Form -->
+        <div class="checkout-form">
+            <form method="POST" action="{% url 'process_payment' %}" id="checkout-form">
+                {% csrf_token %}
+                
+                <!-- Customer Info -->
+                <div class="form-card">
+                    <div class="form-card-section">
+                        <h2 class="form-title">Customer Information</h2>
+                        <input type="text" name="name" placeholder="Full Name *" class="form-input" required>
+                        <input type="email" name="email" placeholder="Email Address *" class="form-input" required>
+                        <input type="tel" name="phone" placeholder="Phone Number *" class="form-input" required>
+                    </div>
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="form-card">
+                    <div class="form-card-section">
+                        <h2 class="form-title">Shipping Address</h2>
+                        
+                        <!-- Street Address -->
+                        <div class="mb-16">
+                            <label class="form-label">Street Address *</label>
+                            <input type="text" name="address" placeholder="House No., Building Name, Street Name" class="form-input" required>
+                        </div>
+                        
+                        <!-- Landmark -->
+                        <div class="mb-16">
+                            <label class="form-label">Landmark (Optional)</label>
+                            <input type="text" name="landmark" placeholder="Near by landmark" class="form-input">
+                        </div>
+                        
+                        <!-- City and State -->
+                        <div class="form-row mb-16">
+                            <div>
+                                <label class="form-label">City *</label>
+                                <input type="text" name="city" placeholder="City" class="form-input" required>
+                            </div>
+                            <div>
+                                <label class="form-label">State *</label>
+                                <input type="text" name="state" placeholder="State" class="form-input" required>
+                            </div>
+                        </div>
+                        
+                        <!-- ZIP Code -->
+                        <div>
+                            <label class="form-label">PIN Code *</label>
+                            <input type="text" name="zip_code" placeholder="6-digit PIN Code" class="form-input" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment -->
+                <div class="form-card">
+                    <div class="form-card-section">
+                        <h2 class="form-title">Payment</h2>
+                        <p style="font-size: 14px; color: #6d7175; margin-bottom: 16px;">
+                            You will be redirected to Razorpay to complete your payment securely.
+                        </p>
+                        
+                        <!-- RazorPay Badge -->
+                        <div class="payment-badge">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1280px-Razorpay_logo.svg.png?_=20171127075036" alt="RazorPay" class="razorpay-logo">
+                            <div class="payment-info">
+                                <span class="payment-title">Secured by Razorpay</span>
+                                <span class="payment-subtitle">UPI, Cards, Net Banking</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    {% if free_shipping_message %}
+                    Pay ₹{{ total }}
+                    {% else %}
+                    Pay ₹{{ total }}
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="summary-card">
+            <div class="summary-section">
+                <h2 class="summary-title">Order Summary</h2>
+                
+                {% for item in cart_items %}
+                <div class="summary-item">
+                    <div class="summary-item-image">
+                        {% if item.product.image %}
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        {% endif %}
+                    </div>
+                    <div class="summary-item-info">
+                        <p class="summary-item-name">{{ item.product.name }}</p>
+                        <p class="summary-item-qty">Qty: {{ item.quantity }}</p>
+                    </div>
+                    <p class="summary-item-price">₹{{ item.total_price }}</p>
+                </div>
+                {% endfor %}
+                
+                <div style="border-top: 1px solid #e1e3e5; margin: 15px 0;"></div>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Subtotal</span>
+                    <span class="summary-value">₹{{ subtotal }}</span>
+                </div>
+                
+                <div class="summary-row">
+                    <span class="summary-label">Shipping</span>
+                    <span class="summary-value">
+                        {% if free_shipping_message %}
+                        <span style="color: #16a34a; font-weight: 600;">FREE</span>
+                        {% else %}
+                        ₹{{ shipping }}
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <div class="summary-total-row">
+                    <span class="summary-total-label">Total</span>
+                    <span class="summary-total-value">₹{{ total }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

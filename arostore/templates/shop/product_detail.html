@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Aro Parts{% endblock %}
+
+{% block content %}
+<div class="dawn-container" style="padding: 40px 20px;">
+    <!-- Breadcrumb -->
+    <div class="dawn-breadcrumbs mb-20">
+        <a href="/">Home</a>
+        <span class="dawn-breadcrumbs-separator">›</span>
+        <a href="/?category={{ product.category.id }}">{{ product.category.name|default:"Products" }}</a>
+        <span class="dawn-breadcrumbs-separator">›</span>
+        <span>{{ product.name }}</span>
+    </div>
+
+    <!-- Product Details - Compact Layout -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto;">
+        <!-- Image Section -->
+        <div>
+            <div class="dawn-card" style="border-radius: 12px; overflow: hidden;">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 100%; aspect-ratio: 1; object-fit: cover;">
+            </div>
+        </div>
+
+        <!-- Info Section -->
+        <div>
+            <div class="dawn-card" style="border-radius: 12px;">
+                <div class="dawn-card-section">
+                    <!-- Title -->
+                    <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 12px; color: var(--p-color-text);">
+                        {{ product.name }}
+                    </h1>
+                    
+                    <!-- Price -->
+                    <div style="margin-bottom: 16px;">
+                        <span style="font-size: 28px; font-weight: 700; color: var(--p-color-text);">
+                            ₹{{ product.price }}
+                        </span>
+                    </div>
+                    
+                    <!-- Stock Status -->
+                    <div style="margin-bottom: 20px;">
+                        {% if product.in_stock %}
+                        <span class="dawn-badge dawn-badge-success">In Stock</span>
+                        {% else %}
+                        <span class="dawn-badge dawn-badge-critical">Out of Stock</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Add to Cart Button -->
+                    {% if product.in_stock %}
+                    <button class="dawn-btn dawn-btn-primary" style="width: 100%; margin-bottom: 20px;" onclick="addToCart({{ product.id }}, '{{ product.name }}')">
+                        Add to Cart
+                    </button>
+                    {% else %}
+                    <button class="dawn-btn" style="width: 100%; margin-bottom: 20px; background: #e1e3e5; color: #6d7175; cursor: not-allowed;" disabled>
+                        Out of Stock
+                    </button>
+                    {% endif %}
+
+                    <!-- Description -->
+                    <hr style="margin: 20px 0; border: none; border-top: 1px solid var(--p-color-border);">
+                    
+                    <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 12px;">Description</h3>
+                    <p style="font-size: 14px; color: var(--p-color-text-subdued); line-height: 1.7;">
+                        {{ product.description|linebreaks }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

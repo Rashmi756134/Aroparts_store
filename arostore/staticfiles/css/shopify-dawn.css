@@ -1,0 +1,565 @@
+/* 
+   SHOPIFY DAWN THEME - COMPLETE DESIGN
+*/
+
+:root {
+    /* Dawn Theme Colors */
+    --p-color-bg: #f6f6f7;
+    --p-color-bg-subdued: #f1f2f4;
+    --p-color-bg-surface: #ffffff;
+    --p-color-text: #202223;
+    --p-color-text-subdued: #6d7175;
+    --p-color-text-inverse: #ffffff;
+    --p-color-action-primary: #008060;
+    --p-color-action-primary-hover: #006e52;
+    --p-color-action-primary-active: #00523f;
+    --p-color-border: #e1e3e5;
+    --p-color-border-subdued: #e4e5e7;
+    --p-color-interactive: #008060;
+    --p-color-interactive-hover: #006e52;
+    --p-color-success: #008060;
+    --p-color-critical: #d82c0d;
+    --p-color-warning: #c58c00;
+    --p-color-bg-fill: #ffffff;
+    --p-color-bg-fill-secondary: #f6f6f7;
+    
+    /* Shadows */
+    --p-shadow-card: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --p-shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --p-shadow-popover: 0 4px 12px rgba(0, 0, 0, 0.15);
+    
+    /* Border Radius */
+    --p-border-radius: 8px;
+    --p-border-radius-200: 4px;
+    --p-border-radius-300: 8px;
+    --p-border-radius-500: 16px;
+    --p-border-radius-full: 200px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--p-color-bg);
+    color: var(--p-color-text);
+    margin: 0;
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* ==================== NAVIGATION ==================== */
+.dawn-navbar {
+    background-color: var(--p-color-bg-surface);
+    box-shadow: var(--p-shadow-card);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dawn-nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.dawn-navbar-brand {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--p-color-text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dawn-navbar-brand:hover {
+    color: var(--p-color-action-primary);
+}
+
+.dawn-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.dawn-nav-links a {
+    color: var(--p-color-text-subdued);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.dawn-nav-links a:hover {
+    color: var(--p-color-text);
+}
+
+/* ==================== HERO SECTION ==================== */
+.dawn-hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.dawn-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+}
+
+.dawn-hero .dawn-container {
+    position: relative;
+    z-index: 1;
+}
+
+.dawn-hero h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--p-color-text-inverse);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.dawn-hero p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ==================== CONTAINER ==================== */
+.dawn-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==================== CARDS ==================== */
+.dawn-card {
+    background-color: var(--p-color-bg-surface);
+    border-radius: var(--p-border-radius);
+    box-shadow: var(--p-shadow-card);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.dawn-card:hover {
+    box-shadow: var(--p-shadow-card-hover);
+}
+
+.dawn-card-section {
+    padding: 24px;
+}
+
+.dawn-card-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--p-color-border);
+}
+
+/* ==================== BUTTONS ==================== */
+.dawn-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--p-border-radius);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+    gap: 8px;
+}
+
+.dawn-btn-primary {
+    background-color: var(--p-color-action-primary);
+    color: var(--p-color-text-inverse);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.dawn-btn-primary:hover {
+    background-color: var(--p-color-action-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 128, 96, 0.3);
+}
+
+.dawn-btn-primary:active {
+    background-color: var(--p-color-action-primary-active);
+    transform: translateY(0);
+}
+
+.dawn-btn-secondary {
+    background-color: var(--p-color-bg-surface);
+    color: var(--p-color-text);
+    border: 1px solid var(--p-color-border);
+}
+
+.dawn-btn-secondary:hover {
+    background-color: var(--p-color-bg-fill-secondary);
+}
+
+.dawn-btn-block {
+    width: 100%;
+    display: flex;
+}
+
+.dawn-btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+.dawn-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--p-color-text);
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+}
+
+.dawn-subheading {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--p-color-text);
+    margin-bottom: 12px;
+}
+
+.dawn-text {
+    font-size: 14px;
+    color: var(--p-color-text);
+}
+
+.dawn-text-lg {
+    font-size: 16px;
+}
+
+.dawn-text-subdued {
+    font-size: 14px;
+    color: var(--p-color-text-subdued);
+}
+
+.dawn-text-xl {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* ==================== PRODUCT GRID ==================== */
+.dawn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+    padding: 40px 0 60px 0;
+}
+
+.dawn-section {
+    padding: 40px 0;
+}
+
+/* ==================== PRODUCT CARD ==================== */
+.dawn-product-card {
+    background-color: var(--p-color-bg-surface);
+    border-radius: var(--p-border-radius);
+    box-shadow: var(--p-shadow-card);
+    overflow: hidden;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.dawn-product-card:hover {
+    box-shadow: var(--p-shadow-card-hover);
+    transform: translateY(-4px);
+}
+
+.dawn-product-image-container {
+    position: relative;
+    aspect-ratio: 1;
+    background-color: var(--p-color-bg-subdued);
+    overflow: hidden;
+}
+
+.dawn-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.dawn-product-card:hover .dawn-product-image {
+    transform: scale(1.05);
+}
+
+.dawn-product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: var(--p-color-success);
+    color: white;
+    padding: 4px 10px;
+    border-radius: var(--p-border-radius-200);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dawn-product-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.dawn-product-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--p-color-text);
+    text-decoration: none;
+    margin-bottom: 8px;
+    display: block;
+    line-height: 1.4;
+}
+
+.dawn-product-title:hover {
+    color: var(--p-color-action-primary);
+}
+
+.dawn-product-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--p-color-text);
+    margin-bottom: 16px;
+}
+
+.dawn-product-price-strike {
+    text-decoration: line-through;
+    color: var(--p-color-text-subdued);
+    font-weight: 400;
+    margin-left: 8px;
+}
+
+/* ==================== FORM INPUTS ==================== */
+.dawn-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--p-color-border);
+    border-radius: var(--p-border-radius);
+    font-size: 14px;
+    background-color: var(--p-color-bg-surface);
+    transition: all 0.2s;
+    color: var(--p-color-text);
+}
+
+.dawn-input:focus {
+    outline: none;
+    border-color: var(--p-color-action-primary);
+    box-shadow: 0 0 0 3px rgba(0, 128, 96, 0.15);
+}
+
+.dawn-input::placeholder {
+    color: var(--p-color-text-subdued);
+}
+
+.dawn-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--p-color-text);
+    margin-bottom: 6px;
+}
+
+/* ==================== BADGES ==================== */
+.dawn-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: var(--p-border-radius-200);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dawn-badge-success {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.dawn-badge-critical {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.dawn-badge-warning {
+    background-color: #fef3c7;
+    color: #c58c00;
+}
+
+/* ==================== FOOTER ==================== */
+.dawn-footer {
+    background-color: var(--p-color-text);
+    color: var(--p-color-text-inverse);
+    padding: 60px 20px 40px;
+    margin-top: 60px;
+}
+
+.dawn-footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+}
+
+.dawn-footer-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dawn-footer-section a {
+    display: block;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 12px;
+    transition: color 0.2s;
+}
+
+.dawn-footer-section a:hover {
+    color: white;
+}
+
+.dawn-footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+}
+
+/* ==================== UTILITIES ==================== */
+.mb-8 { margin-bottom: 8px; }
+.mb-12 { margin-bottom: 12px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-24 { margin-bottom: 24px; }
+.mb-32 { margin-bottom: 32px; }
+
+.mt-8 { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mt-24 { margin-top: 24px; }
+
+.py-20 { padding-top: 20px; padding-bottom: 20px; }
+.px-20 { padding-left: 20px; padding-right: 20px; }
+
+/* ==================== TOAST NOTIFICATION ==================== */
+.toast-notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--p-color-action-primary);
+    color: white;
+    padding: 16px 24px;
+    border-radius: var(--p-border-radius);
+    box-shadow: var(--p-shadow-popover);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== BREADCRUMBS ==================== */
+.dawn-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.dawn-breadcrumbs a {
+    color: var(--p-color-action-primary);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.dawn-breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.dawn-breadcrumbs span {
+    color: var(--p-color-text-subdued);
+    font-size: 14px;
+}
+
+.dawn-breadcrumbs-separator {
+    color: var(--p-color-text-subdued);
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .dawn-hero h1 {
+        font-size: 32px;
+    }
+    
+    .dawn-hero p {
+        font-size: 16px;
+    }
+    
+    .dawn-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    
+    .dawn-nav-links {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dawn-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .dawn-hero {
+        padding: 60px 20px;
+    }
+    
+    .dawn-hero h1 {
+        font-size: 28px;
+    }
+}

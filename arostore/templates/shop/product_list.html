@@ -1,0 +1,366 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shop Aro Purifier Parts{% endblock %}
+
+{% block content %}
+<!-- Hero Section with Background Image -->
+<div style="
+    background-image: url('{% static "images/ro-water-purifiers.png" %}');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+">
+    <!-- Dark Overlay -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.6);
+    "></div>
+    
+    <!-- Content -->
+    <div style="position: relative; z-index: 1; padding: 40px; color: white;">
+        <h1 style="font-size: 48px; font-weight: 400; margin-bottom: 16px;">
+            Shop Aro Purifier Parts.
+        </h1>
+        <p style="font-size: 20px; margin-bottom: 24px; opacity: 0.9;">
+            Find the perfect replacement parts for your Aro Purifier. Quality guaranteed.
+        </p>
+        <a href="#products" style="
+            display: inline-block;
+            padding: 14px 32px;
+            background: transparent;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid white;
+            transition: background 0.3s, color 0.3s;
+        ">Shop now</a>
+    </div>
+</div>
+
+<!-- Quote Section -->
+<div style="
+    background: #f6f6f7;
+    padding: 40px 10px;
+    text-align: center;
+">
+
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="
+            font-size: 28px;
+            font-weight: 400;
+            color: #202223;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            line-height: 1.4;
+        ">Obsessive Attention. Intelligent Effort.</h2>
+        <p style="
+            font-size: 16px;
+            color: #6d7175;
+            line-height: 1.8;
+            max-width: 750px;
+            margin: 0 auto;
+        ">Functional Aro Purifier made of premium materials to improve people's lives in small but mighty ways.</p>
+    </div>
+</div>
+
+<!-- Products Section -->
+<div style="background: #f6f6f7; padding: 40px 0;" id="products">
+    <div class="dawn-container">
+        
+        <!-- Search Bar -->
+        <div style="margin-bottom: 20px;">
+            <form method="GET" action="/" style="display: flex; gap: 12px; max-width: 500px; margin: 0 auto;">
+                <!-- Search Input -->
+                <div style="flex: 1; position: relative;">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        value="{{ search_query }}"
+                        placeholder="Search products..." 
+                        style="
+                            width: 100%;
+                            padding: 12px 16px 12px 44px;
+                            border: 1px solid #e1e3e5;
+                            border-radius: 8px;
+                            font-size: 14px;
+                            outline: none;
+                            box-sizing: border-box;
+                        "
+                >
+                    <!-- Search Icon -->
+                    <svg 
+                        style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: #6d7175;"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    >
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                </div>
+                
+                <!-- Search Button -->
+                <button 
+                    type="submit" 
+                    style="
+                        padding: 12px 24px;
+                        background: #008060;
+                        color: white;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: background 0.2s;
+                    "
+                >
+                    Search
+                </button>
+                
+                <!-- Clear Search -->
+                {% if search_query %}
+                <a 
+                    href="/" 
+                    style="
+                        padding: 12px 20px;
+                        background: #e1e3e5;
+                        color: #202223;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                    "
+                >
+                    Clear
+                </a>
+                {% endif %}
+            </form>
+        </div>
+
+
+        <!-- Category Filter -->
+        {% if categories %}
+        <div style="margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span style="color: #6d7175; font-size: 13px; font-weight: 500;">Filter:</span>
+                <a href="/" style="
+                    padding: 6px 12px;
+                    font-size: 13px;
+                    {% if not current_category %}
+                    background: #008060;
+                    color: white;
+                    {% else %}
+                    background: transparent;
+                    border: 1px solid #e1e3e5;
+                    color: #202223;
+                    {% endif %}
+                    text-decoration: none;
+                    border-radius: 4px;
+                ">All</a>
+                {% for category in categories %}
+                <a href="/?category={{ category.id }}" style="
+                    padding: 6px 12px;
+                    font-size: 13px;
+                    {% if current_category == category.id|stringformat:'s' %}
+                    background: #008060;
+                    color: white;
+                    {% else %}
+                    background: transparent;
+                    border: 1px solid #e1e3e5;
+                    color: #202223;
+                    {% endif %}
+                    text-decoration: none;
+                    border-radius: 4px;
+                ">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Section Title -->
+        <div style="margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: 600; color: #202223; margin-bottom: 4px;">
+                {% if current_category %}
+                    {{ categories.first.name|default:"Products" }}
+                {% else %}
+                    All Products
+                {% endif %}
+            </h2>
+            <p style="font-size: 13px; color: #6d7175;">{{ products.count }} products</p>
+        </div>
+
+        <!-- Product Grid -->
+        <div style="
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        ">
+            {% for product in products %}
+            <div style="
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                transition: all 0.2s ease;
+            ">
+                <a href="{% url 'product_detail' product.id %}" style="text-decoration: none;">
+                    <!-- Product Image -->
+                    <div style="
+                        position: relative;
+                        padding-top: 100%;
+                        background: #f6f6f7;
+                    ">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                        ">
+                        {% if product.in_stock %}
+                        <span style="
+                            position: absolute;
+                            top: 8px;
+                            left: 8px;
+                            background: #008060;
+                            color: white;
+                            padding: 2px 8px;
+                            border-radius: 4px;
+                            font-size: 11px;
+                            font-weight: 600;
+                        ">In Stock</span>
+                        {% endif %}
+                    </div>
+                
+                <div style="padding: 12px;">
+                        <h3 style="
+                            font-size: 14px;
+                            font-weight: 500;
+                            color: #202223;
+                            margin: 0 0 4px 0;
+                            line-height: 1.4;
+                        ">{{ product.name }}</h3>
+                        <p style="
+                            font-size: 16px;
+                            font-weight: 600;
+                            color: #202223;
+                            margin: 0 0 12px 0;
+                        ">₹{{ product.price }}</p>
+                        
+                        {% if product.in_stock %}
+                        <button onclick="addToCart({{ product.id }}, '{{ product.name }}')" style="
+                            width: 100%;
+                            padding: 8px 16px;
+                            background: #008060;
+                            color: white;
+                            border: none;
+                            border-radius: 4px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            transition: background 0.2s ease;
+                        ">Add to Cart</button>
+                        {% else %}
+                        <button disabled style="
+                            width: 100%;
+                            padding: 8px 16px;
+                            background: #e1e3e5;
+                            color: #6d7175;
+                            border: none;
+                            border-radius: 4px;
+                            font-size: 13px;
+                            font-weight: 500;
+                            cursor: not-allowed;
+                        ">Out of Stock</button>
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div style="
+                grid-column: 1 / -1;
+                background: white;
+                border-radius: 8px;
+                padding: 40px;
+                text-align: center;
+            ">
+                <h2 style="font-size: 18px; font-weight: 600; color: #202223; margin-bottom: 8px;">
+                    No Products Found
+                </h2>
+                <p style="font-size: 14px; color: #6d7175;">
+                    No products available in this category.
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addToCart(productId, productName) {
+    fetch('/cart/add/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: 'product_id=' + productId + '&quantity=1'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            updateCartBadge(data.cart_count);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding to cart');
+    });
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function updateCartBadge(count) {
+    var badge = document.getElementById('cart-count-badge');
+    if (badge) {
+        if (count > 0) {
+            badge.textContent = count;
+            badge.style.display = 'flex';
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+}
+</script>
+{% endblock %}

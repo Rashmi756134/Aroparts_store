@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Payment Error - Aro Parts{% endblock %}
+
+{% block content %}
+<div class="dawn-container" style="padding: 60px 20px; text-align: center;">
+    <!-- Error Icon -->
+    <div style="width: 80px; height: 80px; background: #d82c0d; border-radius: 50%; margin: 0 auto 30px; display: flex; align-items: center; justify-content: center;">
+        <svg viewBox="0 0 20 20" style="width: 40px; height: 40px; fill: white;">
+            <path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm1-15v2h2a1 1 0 0 0 0-2H9v-2a1 1 0 0 0-2 0v4H5a1 1 0 0 0 0 2h2v3a1 1 0 0 0 2 0v-3h2a1 1 0 0 0 0-2h-2z"/>
+        </svg>
+    </div>
+    
+    <h1 class="dawn-heading" style="margin-bottom: 10px;">Payment Error</h1>
+    <p class="dawn-text-subdued" style="margin-bottom: 30px;">
+        Something went wrong with your payment. Please try again.
+    </p>
+    
+    {% if error %}
+    <div class="dawn-card" style="max-width: 500px; margin: 0 auto 30px; text-align: left;">
+        <div class="dawn-card-section">
+            <p class="dawn-text"><strong>Error:</strong> {{ error }}</p>
+        </div>
+    </div>
+    {% endif %}
+    
+    <a href="{% url 'checkout' %}" class="dawn-btn dawn-btn-primary" style="width: auto;">Try Again</a>
+    <div style="margin-top: 15px;">
+        <a href="/" class="dawn-text">Back to Store</a>
+    </div>
+</div>
+{% endblock %}

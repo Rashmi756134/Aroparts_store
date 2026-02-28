@@ -1,0 +1,388 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Placed Successfully - Aro Parts{% endblock %}
+
+{% block content %}
+
+<style>
+    /* ============================================
+       SUCCESS PAGE STYLES
+       ============================================ */
+    
+    .success-page {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        text-align: center;
+    }
+    
+    /* Success Icon */
+    .success-icon {
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 24px;
+    }
+    
+    .success-icon svg {
+        width: 50px;
+        height: 50px;
+        color: #16a34a;
+    }
+    
+    /* Success Message */
+    .success-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #202223;
+        margin-bottom: 12px;
+    }
+    
+    .success-message {
+        font-size: 16px;
+        color: #6d7175;
+        margin-bottom: 32px;
+    }
+    
+    /* Order Details Card */
+    .order-details {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        padding: 24px;
+        margin-bottom: 24px;
+        text-align: left;
+    }
+    
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e1e3e5;
+        margin-bottom: 16px;
+    }
+    
+    .order-id {
+        font-size: 18px;
+        font-weight: 700;
+        color: #202223;
+    }
+    
+    .order-status {
+        background: #dcfce7;
+        color: #15803d;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+    
+    .order-section-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+        margin-bottom: 12px;
+        margin-top: 16px;
+    }
+    
+    .order-info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 14px;
+    }
+    
+    .order-info-label {
+        color: #6d7175;
+    }
+    
+    .order-info-value {
+        font-weight: 500;
+        color: #202223;
+    }
+    
+    /* Products List */
+    .order-products {
+        border-top: 1px solid #e1e3e5;
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+    
+    .order-product-item {
+        display: flex;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid #f6f6f7;
+    }
+    
+    .order-product-item:last-child {
+        border-bottom: none;
+    }
+    
+    .order-product-info {
+        flex: 1;
+    }
+    
+    .order-product-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+        margin-bottom: 4px;
+    }
+    
+    .order-product-qty {
+        font-size: 13px;
+        color: #6d7175;
+    }
+    
+    .order-product-price {
+        font-size: 14px;
+        font-weight: 600;
+        color: #202223;
+    }
+    
+    /* Total Section */
+    .order-total {
+        border-top: 1px solid #e1e3e5;
+        margin-top: 16px;
+        padding-top: 16px;
+    }
+    
+    .order-total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        font-size: 14px;
+    }
+    
+    .order-total-final {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 12px;
+        margin-top: 8px;
+        border-top: 2px solid #202223;
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    /* Email Info */
+    .email-info {
+        background: #f6f6f7;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+    
+    .email-info p {
+        font-size: 14px;
+        color: #6d7175;
+        margin: 0;
+    }
+    
+    .email-info strong {
+        color: #202223;
+    }
+    
+    /* Buttons */
+    .btn-container {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn-primary {
+        display: inline-block;
+        padding: 14px 28px;
+        background: #008060;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+    
+    .btn-primary:hover {
+        background: #006b4f;
+    }
+    
+    .btn-secondary {
+        display: inline-block;
+        padding: 14px 28px;
+        background: white;
+        color: #202223;
+        border: 1px solid #e1e3e5;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    
+    .btn-secondary:hover {
+        background: #f6f6f7;
+        border-color: #d1d5db;
+    }
+    
+    /* ============================================
+       MEDIA QUERIES
+       ============================================ */
+    
+    @media (max-width: 480px) {
+        .success-page {
+            padding: 40px 16px;
+        }
+        
+        .success-icon {
+            width: 80px;
+            height: 80px;
+        }
+        
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .success-title {
+            font-size: 24px;
+        }
+        
+        .order-details {
+            padding: 16px;
+        }
+           
+        .btn-container {
+            flex-direction: column;
+        }
+        
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+    }
+    
+</style>
+
+<div class="success-page">
+    <!-- Success Icon -->
+    <div class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+    </div>
+    
+    <!-- Success Message -->
+    <h1 class="success-title">Order Placed Successfully!</h1>
+    <p class="success-message">Thank you for your order. We've received your order and will process it soon.</p>
+    
+    <!-- Order Details Card -->
+    <div class="order-details">
+        <!-- Order Header -->
+        <div class="order-header">
+            <div>
+                <span style="font-size: 13px; color: #6d7175;">Order ID</span>
+                <div class="order-id">#{{ order.id }}</div>
+            </div>
+            <span class="order-status">{{ order.get_status_display }}</span>
+        </div>
+        
+        <!-- Order Info -->
+        <div class="order-section-title">Order Information</div>
+        
+        <div class="order-info-row">
+            <span class="order-info-label">Order Date</span>
+            <span class="order-info-value">{{ order.created_at|date:"d M Y, h:i A" }}</span>
+        </div>
+        
+        <div class="order-info-row">
+            <span class="order-info-label">Payment Method</span>
+            <span class="order-info-value">{{ order.get_payment_method_display }}</span>
+        </div>
+        
+        <div class="order-info-row">
+            <span class="order-info-label">Payment Status</span>
+            <span class="order-info-value">{{ order.get_payment_status_display }}</span>
+        </div>
+        
+        <!-- Shipping Address -->
+        <div class="order-section-title">Shipping Address</div>
+        
+        <div class="order-info-row">
+            <span class="order-info-value" style="color: #202223;">
+                {{ order.customer_name }}<br>
+                {{ order.shipping_address }}<br>
+                {% if order.landmark %}{{ order.landmark }}<br>{% endif %}
+                {{ order.city }}, {{ order.state }} - {{ order.zip_code }}
+            </span>
+        </div>
+        
+        <!-- Products -->
+        <div class="order-section-title">Order Items</div>
+        
+        <div class="order-products">
+            {% for item in order_items %}
+            <div class="order-product-item">
+                <!-- Product Image - FIXED: use product_image -->
+                {% if item.product_image %}
+                <img src="{{ item.product_image }}" alt="{{ item.product_name }}" class="order-product-image">
+                {% else %}
+                <div class="order-product-image-placeholder">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                </div>
+                {% endif %}
+                
+                <div class="order-product-info">
+                    <div class="order-product-name">{{ item.product_name }}</div>
+                    <div class="order-product-qty">Qty: {{ item.quantity }}</div>
+                </div>
+                <div class="order-product-price">₹{{ item.product_price }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Total -->
+        <div class="order-total">
+            <div class="order-total-row">
+                <span class="order-info-label">Subtotal</span>
+                <span class="order-info-value">₹{{ order.total_amount }}</span>
+            </div>
+            <div class="order-total-row">
+                <span class="order-info-label">Shipping</span>
+                <span class="order-info-value">
+                    {% if order.total_amount >= 1500 %}
+                    <span style="color: #16a34a;">FREE</span>
+                    {% else %}
+                    ₹99
+                    {% endif %}
+                </span>
+            </div>
+            <div class="order-total-final">
+                <span>Total</span>
+                <span style="color: #008060;">₹{{ order.total_amount }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Email Info -->
+    <div class="email-info">
+        <p>A confirmation email has been sent to <strong>{{ order.customer_email }}</strong></p>
+    </div>
+    
+    <!-- Buttons -->
+    <div class="btn-container">
+        <a href="/" class="btn-primary">Continue Shopping</a>
+        <a href="{% url 'order_history' %}" class="btn-secondary">View Order History</a>
+    </div>
+</div>
+{% endblock %}
