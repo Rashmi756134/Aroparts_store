@@ -4,21 +4,33 @@ from django.core.mail import send_mail
 from django.conf import settings
 import logging
 import threading
+import os
 
 logger = logging.getLogger(__name__)
 
 
 def send_order_confirmation_email_async(order, order_items):
     """
-    Send order confirmation email in background (non-blocking)
+    Send order confirmation email in background (won't block the page)
     """
     def send_email_thread():
         try:
-            subject = f'Order Confirmation - Aro Parts #{order.id}'
+            # Check if email is configured
+            email_user = os.environ.get('EMAIL_HOST_USER') or getattr(settings, 'EMAIL_HOST_USER', None)
+            email_password = os.environ.get('EMAIL_HOST_PASSWORD') or getattr(settings, 'EMAIL_HOST_PASSWORD', None)
+            
+            logger.info(f"Email config check - USER: {email_user}, PASSWORD SET: {bool(email_password)}")
+            
+            if not email_user or not email_password:
+                logger.error("Email not configured! Add EMAIL_HOST_USER and EMAIL_HOST_PASSWORD to settings.")
+                print("EMAIL NOT CONFIGURED!")
+                return
             
             # Calculate shipping
-            shipping = 0 if order.total_amount >= 1500 else 50
+            shipping = 0 if order.total_amount >= 1500 else 99
             subtotal = order.total_amount - shipping
+            
+            subject = f'Order Confirmation - Aro Parts #{order.id}'
             
             message = f"""
 Dear {order.customer_name},
@@ -32,8 +44,7 @@ Order Date: {order.created_at.strftime('%d %B %Y, %I:%M %p')}
 
 ITEMS
 -----
-"""
-            
+"""       
             for item in order_items:
                 message += f"• {item.product_name} (Qty: {item.quantity}) - ₹{item.product_price}\n"
             
@@ -58,32 +69,25 @@ Thank you for shopping with Aro Parts!
 Best regards,
 Aro Parts Team
             """
-            
+            # Send email
             send_mail(
                 subject=subject,
                 message=message,
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 recipient_list=[order.customer_email],
-                fail_silently=True,  # Don't raise errors
+                fail_silently=False,
             )
-            
-            logger.info(f"Email sent for order #{order.id}")
+            logger.info(f"✅ Email sent successfully to {order.customer_email} for order #{order.id}")
+            print(f"✅ EMAIL SENT to {order.customer_email}")
             
         except Exception as e:
-            logger.error(f"Email error (async): {e}")
+            logger.error(f"❌ Email error: {e}")
+            print(f"❌ EMAIL ERROR: {e}")
     
-    # Start email in background
+    # Start in background
     email_thread = threading.Thread(target=send_email_thread)
     email_thread.start()
 
-
 def send_order_confirmation_email(order, order_items):
-    """
-    Send order confirmation email (blocking version - for compatibility)
-    """
-    try:
-        send_order_confirmation_email_async(order, order_items)
-        return True
-    except Exception as e:
-        logger.error(f"Email error: {e}")
-        return False
+    """Wrapper function"""
+    send_order_confirmation_email_async(order, order_items)
