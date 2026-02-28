@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-6a8f9(q*atem%!2df^mewp3hi01np!&*sfe7e1%7y$9jp6!b(=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # ==================== RAZORPAY PAYMENT SETTINGS ====================
 
