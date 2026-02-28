@@ -1,5 +1,4 @@
 from urllib import request
-import logging
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
@@ -9,10 +8,8 @@ from .models import Product, Category, CartItem, Order, OrderItem
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import CartItem, Order, OrderItem
-from .emails import send_order_confirmation_email_async
+from .emails import send_order_confirmation_email
 
-# Setup logging
-logger = logging.getLogger(__name__)
 
 # Free shipping settings
 FREE_SHIPPING_THRESHOLD = 1500
@@ -193,11 +190,11 @@ def checkout(request):
     }
     return render(request, 'shop/checkout.html', context)
 
-
 # ==================== PAYMENT PROCESSING VIEWS ====================
 
 @login_required(login_url='/accounts/login/')
 def process_payment(request):
+    
     """Process payment with razorpay"""
     
     if request.method == 'POST':
@@ -228,11 +225,12 @@ def process_payment(request):
         city = request.POST.get('city')
         state = request.POST.get('state')
         zip_code = request.POST.get('zip_code')
-        landmark = request.POST.get('landmark', '')
+        landmark = request.POST.get('landmark','')
         
+                   
         # Create order with all fields
         order = Order.objects.create(
-            user=request.user,
+            user = request.user,
             customer_name=customer_name,
             customer_email=customer_email,
             customer_phone=customer_phone,
@@ -261,7 +259,7 @@ def process_payment(request):
                 product_image=product_image_url
             )
             
-        # Clear cart
+            # Clear cart
         cart_items.delete()
         
         from .razorpay import create_order
@@ -273,7 +271,7 @@ def process_payment(request):
                 'order': order,
                 'razorpay_key': settings.RAZORPAY_KEY_ID,
                 'razorpay_order_id': razorpay_order['id'],
-                'amount': int(total * 100),
+                'amount': int(total * 100),  # in paise
                 'customer_name': customer_name,
                 'customer_email': customer_email,
                 'customer_phone': customer_phone,
@@ -292,32 +290,23 @@ def process_payment(request):
     
     return redirect('checkout')
 
-
 # ==================== PAYMENT SUCCESS & HISTORY VIEWS ====================
 
 @login_required(login_url='/accounts/login/')
 def payment_success(request, order_id):
     """Handle successful payment"""
-    print("=" * 50)
-    print("PAYMENT SUCCESS VIEW CALLED")
-    print("=" * 50)
-    
     try:
         order = Order.objects.get(id=order_id, user=request.user)
-        print(f"Order found: {order.id}")
         
         # Update order status
         order.payment_status = 'paid'
         order.save()
-        print("Order marked as paid")
         
         # Get order items
         order_items = OrderItem.objects.filter(order=order)
         
-        # Send confirmation email - USE ASYNC VERSION
-        print("Calling email function...")
-        send_order_confirmation_email_async(order, order_items)
-        print("Email function called")
+        # Send confirmation email
+        send_order_confirmation_email(order, order_items)
         
         context = {
             'order': order,
@@ -327,17 +316,11 @@ def payment_success(request, order_id):
         return render(request, 'shop/payment_success.html', context)
         
     except Order.DoesNotExist:
-        print("Order not found")
         messages.error(request, 'Order not found')
         return redirect('product_list')
-    except Exception as e:
-        print(f"Error in payment success: {str(e)}")
-        logger.error(f"Payment success error: {e}")
-        messages.error(request, 'Error processing payment')
-        return redirect('product_list')
-
 
 # Handle payment cancellation
+
 def payment_cancel(request, order_id):
     """Handle cancelled payment"""
     try:
@@ -351,6 +334,7 @@ def payment_cancel(request, order_id):
         pass
     
     return redirect('checkout')
+
 
 
 @login_required(login_url='/accounts/login/')
@@ -371,7 +355,7 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     order_items = OrderItem.objects.filter(order=order)
     
-    # Calculate shipping
+        # Calculate shipping
     if order.total_amount >= 1500:
         shipping = 0
     else:
@@ -388,34 +372,3 @@ def order_detail(request, order_id):
     }
     
     return render(request, 'shop/order_detail.html', context)
-
-
-# ==================== TEST EMAIL VIEW ====================
-
-def test_email(request):
-    """Test email function"""
-    print("=" * 50)
-    print("TEST EMAIL VIEW CALLED")
-    print("=" * 50)
-    
-    try:
-        from django.core.mail import send_mail
-        
-        print(f"EMAIL_HOST: {settings.EMAIL_HOST}")
-        print(f"EMAIL_HOST_USER: {settings.EMAIL_HOST_USER}")
-        print(f"DEFAULT_FROM_EMAIL: {settings.DEFAULT_FROM_EMAIL}")
-        
-        send_mail(
-            'Test Email from Aro Parts',
-            'This is a test email from Render deployment!',
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.DEFAULT_FROM_EMAIL],
-            fail_silently=False,
-        )
-        
-        print("Test email sent successfully!")
-        return JsonResponse({'success': True, 'message': 'Email sent!'})
-        
-    except Exception as e:
-        print(f"Test email failed: {str(e)}")
-        return JsonResponse({'success': False, 'error': str(e)})
