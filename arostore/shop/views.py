@@ -95,7 +95,7 @@ def add_to_cart(request):
         product_id = request.POST.get('product_id')
         quantity = int(request.POST.get('quantity', 1))
         
-        product = get_object_or_404(Product, id=product_id)
+        product = get_object_or_404(Product, id=product_id, in_stock=True)
         session_key = request.session.session_key or request.session.create()
         
         cart_item, created = CartItem.objects.get_or_create(
