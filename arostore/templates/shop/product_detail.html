@@ -47,7 +47,13 @@
                         <span class="dawn-badge dawn-badge-critical">Out of Stock</span>
                         {% endif %}
                     </div>
-
+                    
+                    <!-- Quantity Selector -->
+                    <div class="quantity-selector" style="margin-bottom: 20px;">
+                        <label style="font-weight: 600; color: #202223; margin-right: 10px;">Quantity:</label>
+                        <input type="number" id="quantity" value="1" min="1" max="10" style="width: 60px; padding: 8px 12px; border: 1px solid #e1e3e5; border-radius: 6px; font-size: 14px;">
+                    </div>
+                    
                     <!-- Add to Cart Button -->
                     {% if product.in_stock %}
                     <button class="dawn-btn dawn-btn-primary" style="width: 100%; margin-bottom: 20px;" onclick="addToCart({{ product.id }}, '{{ product.name }}')">
@@ -71,4 +77,113 @@
         </div>
     </div>
 </div>
+
+<!-- Cart Status Message -->
+<div id="cart-status" style="display: none; position: fixed; top: 20px; right: 20px; background: #dcfce7; border: 1px solid #16a34a; border-radius: 8px; padding: 16px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2">
+            <path d="M20 6L9 17l-5-5"/>
+        </svg>
+        <span id="cart-status-message" style="color: #16a34a; font-weight: 600;">Product added to cart!</span>
+    </div>
+</div>
+
+<script>
+function addToCart(productId, productName) {
+    const quantity = document.getElementById('quantity').value;
+    
+    console.log("Adding product to cart:", productId, "Quantity:", quantity);
+    
+    fetch('/add-to-cart/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `product_id=${productId}&quantity=${quantity}`
+    })
+    .then(response => {
+        console.log("Response status:", response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log("Response data:", data);
+        
+        if (data.success) {
+            // Update cart badge in navbar
+            const badge = document.getElementById('cart-badge');
+            console.log("Cart badge element:", badge);
+            
+            if (badge) {
+                badge.textContent = data.cart_count;
+                badge.style.display = 'flex';
+                console.log("Cart badge updated to:", data.cart_count);
+            } else {
+                console.error("Cart badge element not found!");
+            }
+            
+            // Show success message
+            showCartStatus(data.message);
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Something went wrong!');
+    });
+}
+
+function showCartStatus(message) {
+    const statusDiv = document.getElementById('cart-status');
+    const messageSpan = document.getElementById('cart-status-message');
+    
+    if (statusDiv && messageSpan) {
+        messageSpan.textContent = message;
+        statusDiv.style.display = 'block';
+        
+        // Hide after 3 seconds
+        setTimeout(() => {
+            statusDiv.style.display = 'none';
+        }, 3000);
+    }
+}
+</script>
+
+<style>
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.quantity-selector label {
+    font-weight: 600;
+    color: #202223;
+    margin-right: 10px;
+}
+
+.quantity-selector input {
+    width: 60px;
+    padding: 8px 12px;
+    border: 1px solid #e1e3e5;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.dawn-btn-primary {
+    background: #008060;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dawn-btn-primary:hover {
+    background: #006b4f;
+}
+</style>
+{% endblock %}
 {% endblock %}
