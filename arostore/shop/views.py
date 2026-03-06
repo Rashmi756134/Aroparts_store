@@ -53,6 +53,9 @@ def cart_count(request):
     """Get cart item count for AJAX requests"""
     session_key = request.session.session_key or request.session.create()
     count = CartItem.objects.filter(session_key=session_key).count()
+    
+    print(f"Cart count request: {count}")
+    
     return JsonResponse({'count': count})
 
 
@@ -110,7 +113,8 @@ def add_to_cart(request):
         return JsonResponse({
             'success': True,
             'message': f'{product.name} added to cart!',
-            'cart_count': cart_count
+            'cart_count': cart_count,
+            'session_key': session_key,
         })
     
     return JsonResponse({'success': False, 'message': 'Invalid request'})
